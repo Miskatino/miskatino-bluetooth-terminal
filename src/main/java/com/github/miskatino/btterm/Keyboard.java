@@ -13,12 +13,22 @@ public class Keyboard {
     
     private Paint p = new Paint();
     
-    private static char[][] letters = {
+    private boolean shifted = false;
+    
+    private static char[][] letters1 = {
         {'+', '-', '*', '/', '%', '<', '=', '>', ';', KEY_BKSP},
         {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
         {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'},
         {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', KEY_SHIFT},
         {'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', ' ', KEY_ENTER},
+    };
+    
+    private static char[][] letters2 = {
+        {'~', '|', '_', '\\', '%', '[', ']', '"', ':', KEY_BKSP},
+        {'!', '@', '#', '$', '?', '^', '&', '*', '(', ')'},
+        {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
+        {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', KEY_SHIFT},
+        {'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ' ', KEY_ENTER},
     };
     
     private float keySize(int w) {
@@ -38,7 +48,7 @@ public class Keyboard {
                 p.setColor(Color.BLUE);
                 c.drawCircle(x, y, keySz * 0.45f, p);
                 p.setColor(Color.YELLOW);
-                c.drawText(Character.toString(letters[row][col]), x, y - vShift, p);
+                c.drawText(Character.toString(getLetter(row, col)), x, y - vShift, p);
             }
         }
     }
@@ -51,20 +61,27 @@ public class Keyboard {
         float sz = keySize(w);
         int row = (int) ((y - (h - getHeight(w, h))) / sz);
         int col = (int) (x / sz);
-        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
-            return 0;
-        }
-        char c = letters[row][col];
+        char c = getLetter(row, col);
         switch (c) {
             case KEY_BKSP:
                 return '\b';
             case KEY_SHIFT:
-                return 0;
+                shifted = true;
+                return 15;
             case KEY_ENTER:
                 return '\r';
             default:
+                shifted = false;
                 return c;
         }
+    }
+    
+    private char getLetter(int row, int col) {
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
+            return 0;
+        }
+        char[][] ltrs = shifted ? letters2 : letters1;
+        return ltrs[row][col];
     }
 }
 

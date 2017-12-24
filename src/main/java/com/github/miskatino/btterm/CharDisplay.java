@@ -33,10 +33,14 @@ public class CharDisplay {
     public void drawLines(Canvas c, int w, int h) {
         p.setColor(Color.GREEN);
         p.setTypeface(Typeface.MONOSPACE);
-        p.setTextSize(calcFontSizeForWidth(w / (float) DISP_WIDTH));
+        p.setStyle(Paint.Style.STROKE);
+        float letterW = w / (float) DISP_WIDTH;
+        p.setTextSize(calcFontSizeForWidth(letterW));
         float fontHeight = calcFontHeight();
         float y = h - fontHeight / 2;
         int i = text.size() - 1;
+        float cursorX = text.get(i).length() * letterW;
+        c.drawLine(cursorX, y - 1, cursorX + letterW, y - 1, p);
         while (i >= 0 && y > 0) {
             c.drawText(text.get(i).toString(), 0, y, p);
             i -= 1;
