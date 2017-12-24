@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <TextView
+        android:id="@+id/text_view_1"
+        android:text="Choose device to connect:"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    <Spinner
+        android:id="@+id/dev_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/connect_btn"
+        android:text="Start me"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
