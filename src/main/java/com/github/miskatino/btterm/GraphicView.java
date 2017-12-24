@@ -6,11 +6,11 @@ import android.view.*;
 public class GraphicView extends View {
 
     private Paint paint;
-    private Canvas cnv;
-    private Bitmap bitmap;
     private MainActivity activity;
     private Keyboard kbd;
     private CharDisplay disp;
+    private int width, height;
+    private long lastTouch;
     
     GraphicView(MainActivity activity) {
         super(activity);
@@ -22,31 +22,40 @@ public class GraphicView extends View {
         setOnTouchListener(activity);
         kbd = new Keyboard();
         disp = new CharDisplay();
+        lastTouch = 0;
     }
     
     boolean onTouch(MotionEvent event) {
-        paint.setColor(Color.RED);
-        cnv.drawCircle(event.getX(), event.getY(), 7, paint);
-        invalidate();
+        if (!touchDelayPassed()) {
+            return true;
+        }
+        char c = kbd.pressed(event.getX(), event.getY(), width, height);
+        if (c != 0) {
+            disp.addChar(c);
+            invalidate();
+        }
+        return true;
+    }
+    
+    private boolean touchDelayPassed() {
+        long cur = System.currentTimeMillis();
+        if (cur - lastTouch < 350) {
+            return false;
+        }
+        lastTouch = cur;
         return true;
     }
     
     @Override
     protected void onDraw(Canvas canvas) {
-        Rect r = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        //canvas.drawBitmap(bitmap, r, r, null);
-        kbd.drawKeys(canvas, r.width(), r.height());
-        disp.drawLines(canvas, r.width(), r.height() - kbd.getHeight(r.width(), r.height()));
+        kbd.drawKeys(canvas, width, height);
+        disp.drawLines(canvas, width, height - kbd.getHeight(width, height));
     }
     
     @Override
     protected void onSizeChanged(int w, int h, int oldW, int oldH) {
-        if (bitmap != null) {
-            bitmap.recycle();
-        }
-        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
-        cnv = new Canvas();
-        cnv.setBitmap(bitmap);
+        width = w;
+        height = h;
     }
     
 }

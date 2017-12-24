@@ -9,29 +9,59 @@ public class CharDisplay {
     
     private Paint p = new Paint();
     private Rect fontBounds = new Rect();
+    private char lineEndChar = 13;
     
     private List<StringBuilder> text;
     
     public CharDisplay() {
         text = new ArrayList<StringBuilder>();
-        text.add(new StringBuilder("10 print 'zloba'"));
-        text.add(new StringBuilder("20 if x > 5; let m = 3.14159265358"));
-        text.add(new StringBuilder("run"));
+        text.add(new StringBuilder());
+        addStr("10 x = 1\r20 pin 9; x\r30 delay 1500\r40 x = 1 - x\r50 goto 20\r\rrun");
+    }
+    
+    private float calcFontSizeForWidth(float charWidth) {
+        p.setTextSize(48f);
+        p.getTextBounds("A", 0, 1, fontBounds);
+        return charWidth * 48f / fontBounds.width();
+    }
+    
+    private float calcFontHeight() {
+        p.getTextBounds("Ap", 0, 2, fontBounds);
+        return fontBounds.height();
     }
     
     public void drawLines(Canvas c, int w, int h) {
-        p.setTypeface(Typeface.MONOSPACE);
-        p.setTextSize(48f);
-        p.getTextBounds("A", 0, 1, fontBounds);
-        p.setTextSize(w * 48f / DISP_WIDTH / fontBounds.width());
-        p.getTextBounds("Ap", 0, 2, fontBounds);
         p.setColor(Color.GREEN);
-        float y = h - fontBounds.height() / 2;
+        p.setTypeface(Typeface.MONOSPACE);
+        p.setTextSize(calcFontSizeForWidth(w / (float) DISP_WIDTH));
+        float fontHeight = calcFontHeight();
+        float y = h - fontHeight / 2;
         int i = text.size() - 1;
         while (i >= 0 && y > 0) {
             c.drawText(text.get(i).toString(), 0, y, p);
             i -= 1;
-            y -= fontBounds.height() * 1.2;
+            y -= fontHeight * 1.2;
+        }
+    }
+    
+    public void addChar(char c) {
+        StringBuilder lastLine = text.get(text.size() - 1);
+        if (c >= ' ') {
+            lastLine.append(c);
+        } else if (c == lineEndChar) {
+            text.add(new StringBuilder());
+        } else if (c == '\b') {
+            if (lastLine.length() > 0) {
+                lastLine.setLength(lastLine.length() - 1);
+            } else if (text.size() > 1) {
+                text.remove(text.size() - 1);
+            }
+        }
+    }
+    
+    public void addStr(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            addChar(s.charAt(i));
         }
     }
 
