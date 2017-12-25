@@ -8,7 +8,7 @@ public class GraphicView extends View {
     private Paint paint;
     private MainActivity activity;
     private Keyboard kbd;
-    private CharDisplay disp;
+    CharDisplay disp;
     private int width, height;
     private long lastTouch;
     
@@ -31,7 +31,9 @@ public class GraphicView extends View {
         }
         char c = kbd.pressed(event.getX(), event.getY(), width, height);
         if (c != 0) {
-            disp.addChar(c);
+            if (c != 1) {
+                activity.sendKey(c);
+            }
             invalidate();
         }
         return true;

@@ -16,7 +16,6 @@ public class CharDisplay {
     public CharDisplay() {
         text = new ArrayList<StringBuilder>();
         text.add(new StringBuilder());
-        addStr("10 x = 1\r20 pin 9; x\r30 delay 1500\r40 x = 1 - x\r50 goto 20\r\rrun");
     }
     
     private float calcFontSizeForWidth(float charWidth) {
@@ -57,8 +56,6 @@ public class CharDisplay {
         } else if (c == '\b') {
             if (lastLine.length() > 0) {
                 lastLine.setLength(lastLine.length() - 1);
-            } else if (text.size() > 1) {
-                text.remove(text.size() - 1);
             }
         }
     }

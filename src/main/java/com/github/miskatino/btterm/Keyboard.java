@@ -7,6 +7,7 @@ public class Keyboard {
     private static final char KEY_BKSP = (char) 0x2190;
     private static final char KEY_SHIFT = (char) 0x2191;
     private static final char KEY_ENTER = (char) 0x21B2;
+    private static final char KEY_STOP = (char) 0x21AF;
     
     private static final int ROWS = 5;
     private static final int COLS = 10;
@@ -24,7 +25,7 @@ public class Keyboard {
     };
     
     private static char[][] letters2 = {
-        {'~', '|', '_', '\\', '%', '[', ']', '"', ':', KEY_BKSP},
+        {'~', '|', '_', '\\', '%', '[', ']', '"', ':', KEY_STOP},
         {'!', '@', '#', '$', '?', '^', '&', '*', '(', ')'},
         {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
         {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', KEY_SHIFT},
@@ -66,10 +67,13 @@ public class Keyboard {
             case KEY_BKSP:
                 return '\b';
             case KEY_SHIFT:
-                shifted = true;
-                return 15;
+                shifted = !shifted;
+                return 1;
             case KEY_ENTER:
                 return '\r';
+            case KEY_STOP:
+                shifted = false;
+                return 3;
             default:
                 shifted = false;
                 return c;

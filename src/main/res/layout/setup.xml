@@ -3,7 +3,7 @@
         android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
     <TextView
         android:id="@+id/text_view_1"
-        android:text="Choose device to connect:"
+        android:text="Choose bluetooth device:"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
     <Spinner
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/connect_btn"
-        android:text="Start me"
+        android:text="Connect"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
