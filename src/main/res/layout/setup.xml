@@ -10,6 +10,15 @@
         android:id="@+id/dev_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/text_view_2"
+        android:text="Keyboard type:"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    <Spinner
+        android:id="@+id/kbd_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/connect_btn"
         android:text="Connect"

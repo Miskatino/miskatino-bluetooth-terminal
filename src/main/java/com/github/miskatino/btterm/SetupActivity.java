@@ -26,6 +26,7 @@ public class SetupActivity extends Activity {
     }
     
     private Spinner devs;
+    private Spinner kbds;
     
     @Override
     protected void onCreate(Bundle savedState) {
@@ -37,6 +38,19 @@ public class SetupActivity extends Activity {
                 tryToConnect();
 			}
         });
+        populateDeviceList();
+        populateKbdChoice();
+    }
+    
+    private void populateKbdChoice() {
+        kbds = (Spinner) findViewById(R.id.kbd_type);
+        ArrayAdapter<String> kbdsAda = new ArrayAdapter(
+                this, android.R.layout.simple_spinner_item, Arrays.asList("5 rows of 10", "7 rows of 7"));
+        kbdsAda.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        kbds.setAdapter(kbdsAda);
+    }
+    
+    private void populateDeviceList() {
         BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
         devs = (Spinner) findViewById(R.id.dev_list);
         List<DeviceDescription> devDescr = new ArrayList<>();
@@ -52,8 +66,8 @@ public class SetupActivity extends Activity {
     private void tryToConnect() {
         DeviceDescription dev = (DeviceDescription) devs.getSelectedItem();
         Bundle b = new Bundle();
-        b.putCharSequence("dev", dev.name);
         b.putCharSequence("mac", dev.mac);
+        b.putInt("kbdrows", Integer.parseInt(String.valueOf(kbds.getSelectedItem()).replaceFirst("\\s.*", "")));
         Intent intent = new Intent(SetupActivity.this, MainActivity.class);
         intent.putExtras(b);
         startActivity(intent);

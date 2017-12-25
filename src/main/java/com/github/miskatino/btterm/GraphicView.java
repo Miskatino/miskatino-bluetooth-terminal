@@ -12,7 +12,7 @@ public class GraphicView extends View {
     private int width, height;
     private long lastTouch;
     
-    GraphicView(MainActivity activity) {
+    GraphicView(MainActivity activity, int kbdRows) {
         super(activity);
         this.activity = activity;
         paint = new Paint();
@@ -20,7 +20,7 @@ public class GraphicView extends View {
         setFocusable(true);
         setFocusableInTouchMode(true);
         setOnTouchListener(activity);
-        kbd = new Keyboard();
+        kbd = kbdRows == 5 ? new Keyboard5x10() : new Keyboard7x7();
         disp = new CharDisplay();
         lastTouch = 0;
     }
