@@ -27,6 +27,7 @@ public class SetupActivity extends Activity {
     
     private Spinner devs;
     private Spinner kbds;
+    private Spinner fonts;
     
     @Override
     protected void onCreate(Bundle savedState) {
@@ -40,6 +41,7 @@ public class SetupActivity extends Activity {
         });
         populateDeviceList();
         populateKbdChoice();
+        populateFontSize();
     }
     
     private void populateKbdChoice() {
@@ -63,11 +65,21 @@ public class SetupActivity extends Activity {
         devs.setAdapter(devsAda);
     }
     
+    private void populateFontSize() {
+        fonts = (Spinner) findViewById(R.id.font_size);
+        ArrayAdapter<String> fontsAda = new ArrayAdapter(
+                this, android.R.layout.simple_spinner_item, Arrays.asList("Small: 48 chars", "Medium: 32 chars", "Large: 24 chars"));
+        fontsAda.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fonts.setAdapter(fontsAda);
+        fonts.setSelection(1);
+    }
+    
     private void tryToConnect() {
         DeviceDescription dev = (DeviceDescription) devs.getSelectedItem();
         Bundle b = new Bundle();
         b.putCharSequence("mac", dev.mac);
         b.putInt("kbdrows", Integer.parseInt(String.valueOf(kbds.getSelectedItem()).replaceFirst("\\s.*", "")));
+        b.putInt("font", Integer.parseInt(String.valueOf(fonts.getSelectedItem()).replaceAll("\\D+", "")));
         Intent intent = new Intent(SetupActivity.this, MainActivity.class);
         intent.putExtras(b);
         startActivity(intent);

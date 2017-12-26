@@ -2,6 +2,7 @@ package com.github.miskatino.btterm;
 
 import android.graphics.*;
 import android.view.*;
+import android.os.*;
 
 public class GraphicView extends View {
 
@@ -12,7 +13,7 @@ public class GraphicView extends View {
     private int width, height;
     private long lastTouch;
     
-    GraphicView(MainActivity activity, int kbdRows) {
+    GraphicView(MainActivity activity) {
         super(activity);
         this.activity = activity;
         paint = new Paint();
@@ -20,8 +21,9 @@ public class GraphicView extends View {
         setFocusable(true);
         setFocusableInTouchMode(true);
         setOnTouchListener(activity);
-        kbd = kbdRows == 5 ? new Keyboard5x10() : new Keyboard7x7();
-        disp = new CharDisplay();
+        Bundle b = activity.getIntent().getExtras();
+        kbd = b.getInt("kbdrows") == 5 ? new Keyboard5x10() : new Keyboard7x7();
+        disp = new CharDisplay(b.getInt("font"));
         lastTouch = 0;
     }
     

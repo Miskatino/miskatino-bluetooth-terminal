@@ -25,7 +25,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        view = new GraphicView(this, getIntent().getExtras().getInt("kbdrows"));
+        view = new GraphicView(this);
         setContentView(view);
     }
     

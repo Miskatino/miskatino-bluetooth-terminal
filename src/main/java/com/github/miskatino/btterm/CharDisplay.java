@@ -5,7 +5,7 @@ import android.graphics.*;
 
 public class CharDisplay {
 
-    private static final int DISP_WIDTH = 32;
+    private float dispWidth = 32;
     
     private Paint p = new Paint();
     private Rect fontBounds = new Rect();
@@ -13,9 +13,10 @@ public class CharDisplay {
     
     private List<StringBuilder> text;
     
-    public CharDisplay() {
+    public CharDisplay(int charsPerLine) {
         text = new ArrayList<StringBuilder>();
         text.add(new StringBuilder());
+        dispWidth = charsPerLine;
     }
     
     private float calcFontSizeForWidth(float charWidth) {
@@ -33,10 +34,11 @@ public class CharDisplay {
         p.setColor(Color.GREEN);
         p.setTypeface(Typeface.MONOSPACE);
         p.setStyle(Paint.Style.STROKE);
-        float letterW = w / (float) DISP_WIDTH;
+        float letterW = w / dispWidth;
         p.setTextSize(calcFontSizeForWidth(letterW));
         float fontHeight = calcFontHeight();
         float y = h - fontHeight / 2;
+        reduceLines((int) Math.ceil(y / fontHeight));
         int i = text.size() - 1;
         float cursorX = text.get(i).length() * letterW;
         c.drawLine(cursorX, y - 1, cursorX + letterW, y - 1, p);
@@ -44,6 +46,12 @@ public class CharDisplay {
             c.drawText(text.get(i).toString(), 0, y, p);
             i -= 1;
             y -= fontHeight * 1.2;
+        }
+    }
+    
+    private void reduceLines(int lines) {
+        if (lines < text.size()) {
+            text.subList(0, text.size() - lines).clear();
         }
     }
     
