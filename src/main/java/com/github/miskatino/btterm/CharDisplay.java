@@ -33,7 +33,7 @@ public class CharDisplay {
     public void drawLines(Canvas c, int w, int h) {
         p.setColor(Color.GREEN);
         p.setTypeface(Typeface.MONOSPACE);
-        p.setStyle(Paint.Style.STROKE);
+        p.setStyle(Paint.Style.FILL);
         float letterW = w / dispWidth;
         p.setTextSize(calcFontSizeForWidth(letterW));
         float fontHeight = calcFontHeight();
