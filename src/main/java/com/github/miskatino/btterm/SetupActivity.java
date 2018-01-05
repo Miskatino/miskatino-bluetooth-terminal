@@ -10,6 +10,8 @@ import java.util.*;
 
 public class SetupActivity extends Activity {
     
+    private SharedPreferences prefs;
+    
     public static class DeviceDescription {
         
         private String name, mac;
@@ -40,16 +42,18 @@ public class SetupActivity extends Activity {
 			}
         });
         populateDeviceList();
-        populateKbdChoice();
-        populateFontSize();
+        prefs = getPreferences(Context.MODE_PRIVATE);
+        populateKbdChoice(prefs.getInt("kbd", 0));
+        populateFontSize(prefs.getInt("font", 1));
     }
     
-    private void populateKbdChoice() {
+    private void populateKbdChoice(int defIndex) {
         kbds = (Spinner) findViewById(R.id.kbd_type);
         ArrayAdapter<String> kbdsAda = new ArrayAdapter(
                 this, android.R.layout.simple_spinner_item, Arrays.asList("5 rows of 10", "7 rows of 7"));
         kbdsAda.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kbds.setAdapter(kbdsAda);
+        kbds.setSelection(defIndex);
     }
     
     private void populateDeviceList() {
@@ -65,19 +69,23 @@ public class SetupActivity extends Activity {
         devs.setAdapter(devsAda);
     }
     
-    private void populateFontSize() {
+    private void populateFontSize(int defIndex) {
         fonts = (Spinner) findViewById(R.id.font_size);
         ArrayAdapter<String> fontsAda = new ArrayAdapter(
                 this, android.R.layout.simple_spinner_item, Arrays.asList("Small: 48 chars", "Medium: 32 chars", "Large: 24 chars"));
         fontsAda.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fonts.setAdapter(fontsAda);
-        fonts.setSelection(1);
+        fonts.setSelection(defIndex);
     }
     
     private void tryToConnect() {
         DeviceDescription dev = (DeviceDescription) devs.getSelectedItem();
         Bundle b = new Bundle();
         b.putCharSequence("mac", dev.mac);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("kbd", kbds.getSelectedItemPosition());
+        editor.putInt("font", fonts.getSelectedItemPosition());
+        editor.commit();
         b.putInt("kbdrows", Integer.parseInt(String.valueOf(kbds.getSelectedItem()).replaceFirst("\\s.*", "")));
         b.putInt("font", Integer.parseInt(String.valueOf(fonts.getSelectedItem()).replaceAll("\\D+", "")));
         Intent intent = new Intent(SetupActivity.this, MainActivity.class);
