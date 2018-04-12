@@ -13,7 +13,7 @@ instead of collecting whole lines before sending (as most of popular application
 
 2. Set environment variable ANDROID_HOME to the folder where android-sdk is unpacked, e.g. `/home/user/utils/android-sdk`.
 
-3. Use `$ANDROID_HOME/tools/bin/sdkmanager` tool to install SDK for android 2.3.6, i.e. `platforms;android-10`.
+3. Use `$ANDROID_HOME/tools/bin/sdkmanager` tool to install SDK for android 2.3.3, i.e. `platforms;android-10`.
 
 4. Change to directory with project and run `mvn package`.
 
